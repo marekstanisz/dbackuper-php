@@ -1,0 +1,4 @@
+access.json
+*.sql.gz
+*.sql
+.DS_Store
