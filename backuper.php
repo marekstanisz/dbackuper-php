@@ -2,6 +2,7 @@
 
 function main(): void {
     echo "Starting database backup process...\n";
+    echo "Running as user: " . get_current_user() . "\n";
     $accessInfo = json_decode(file_get_contents('access.json'), true);
     if ($accessInfo === null) {
         echo "Error reading access.json: " . json_last_error_msg() . "\n";
