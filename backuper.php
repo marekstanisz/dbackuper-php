@@ -3,7 +3,12 @@
 function main(): void {
     echo "Starting database backup process...\n";
     $accessInfo = json_decode(file_get_contents('access.json'), true);
+    if ($accessInfo === null) {
+        echo "Error reading access.json: " . json_last_error_msg() . "\n";
+        throw new Exception("Failed to read access.json: " . json_last_error_msg());
+    }
     if (json_last_error() !== JSON_ERROR_NONE) {
+        echo "Error parsing access.json: " . json_last_error_msg() . "\n";
         throw new Exception("Failed to parse access.json: " . json_last_error_msg());
     }
     if (empty($accessInfo)) {
