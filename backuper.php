@@ -2,6 +2,7 @@
 
 function main(): void {
     echo "Starting database backup process...\n";
+    echo exec('whoami');
     $user = get_current_user();
     echo "Running as user: " . $user . "\n";
     $accessInfo = json_decode(file_get_contents('access.json'), true);
