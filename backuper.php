@@ -41,7 +41,7 @@ function backupDatabase(int $port, string $host, string $dbName, string $cnfPath
     $command = sprintf(
         'mysqldump --defaults-extra-file=%s -P %d -h %s %s --no-tablespaces',
         escapeshellarg($cnfPath),
-        escapeshellarg($port),
+        $port,
         escapeshellarg($host),
         escapeshellarg($dbName)
     );
