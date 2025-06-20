@@ -10,7 +10,7 @@ function main(): void {
         $dbName = $db['db_name'];
 
         try {
-            backupDatabase($port, $host, $user, $password, $dbName);
+            backupDatabase($port, $host, $dbName);
             pruneBackupFiles($dbName, $numberOfBackups);
         } catch (Exception $e) {
             echo "Error backing up {$dbName}: {$e->getMessage()}\n";
@@ -30,7 +30,7 @@ function pruneBackupFiles(string $dbName, int $numberOfBackups): void {
     }
 }
 
-function backupDatabase(int $port, string $host, string $user, string $password, string $dbName): void {
+function backupDatabase(int $port, string $host, string $dbName): void {
     $command = sprintf(
         'mysqldump --defaults-extra-file=~/.backup.cnf -P %d -h %s %s --no-tablespaces',
         $port,
