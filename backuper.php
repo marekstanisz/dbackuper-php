@@ -51,7 +51,11 @@ function backupDatabase(int $port, string $host, string $dbName, string $cnfPath
 
     $fullCommand = "{$command} | gzip > " . escapeshellarg($backupFile);
 
-    exec($fullCommand, $output, $returnCode);
+    try {
+        exec($fullCommand, $output, $returnCode);
+    } catch (Exception $e) {
+        throw new Exception("Failed to execute backup command: " . $e->getMessage());
+    }
 
     if ($returnCode !== 0) {
         throw new Exception("Backup command failed with code {$returnCode}");
