@@ -11,22 +11,9 @@ function main(): void {
 
         try {
             backupDatabase($port, $host, $dbName);
-            pruneBackupFiles($dbName, $numberOfBackups);
         } catch (Exception $e) {
             echo "Error backing up {$dbName}: {$e->getMessage()}\n";
         }
-    }
-}
-
-function pruneBackupFiles(string $dbName, int $numberOfBackups): void {
-    $backupFilePattern = "{$dbName}_*.sql.gz";
-    $files = glob($backupFilePattern);
-    sort($files);
-
-    while (count($files) > $numberOfBackups) {
-        $fileToRemove = array_shift($files);
-        echo "Removing old backup file: {$fileToRemove}\n";
-        unlink($fileToRemove);
     }
 }
 
