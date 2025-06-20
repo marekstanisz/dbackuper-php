@@ -3,6 +3,19 @@
 function main(): void {
     echo "Starting database backup process...\n";
     $accessInfo = json_decode(file_get_contents('access.json'), true);
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        throw new Exception("Failed to parse access.json: " . json_last_error_msg());
+    }
+    if (empty($accessInfo)) {
+        throw new Exception("No database access information found in access.json.");
+    }
+    echo "Access information loaded successfully.\n";
+    echo "Found " . count($accessInfo) . " databases to back up.\n";
+    if (!file_exists('~/.backup.cnf')) {
+        throw new Exception("Backup configuration file ~/.backup.cnf does not exist.");
+    }
+    echo "Backup configuration file found.\n";
+    echo "Starting backup for each database...\n";
 
     foreach ($accessInfo as $db) {
         $port = $db['port'];
@@ -18,6 +31,7 @@ function main(): void {
 }
 
 function backupDatabase(int $port, string $host, string $dbName): void {
+    echo "Backing up database: {$dbName} on host: {$host} at port: {$port}...\n";
     $command = sprintf(
         'mysqldump --defaults-extra-file=~/.backup.cnf -P %d -h %s %s --no-tablespaces',
         $port,
