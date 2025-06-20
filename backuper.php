@@ -52,7 +52,7 @@ function backupDatabase(int $port, string $host, string $dbName, string $cnfPath
     $fullCommand = "{$command} | gzip > " . escapeshellarg($backupFile);
     echo "Executing command: {$fullCommand}\n";
     try {
-        exec($fullCommand, $output, $returnCode);
+        exec("sh -c \"$fullCommand\"", $output, $returnCode);
     } catch (Exception $e) {
         throw new Exception("Failed to execute backup command: " . $e->getMessage());
     }
