@@ -7,6 +7,7 @@ function main(): void {
         throw new Exception("Failed to parse access.json: " . json_last_error_msg());
     }
     if (empty($accessInfo)) {
+        echo "No database access information found in access.json.\n";
         throw new Exception("No database access information found in access.json.");
     }
     echo "Access information loaded successfully.\n";
