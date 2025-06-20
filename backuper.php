@@ -1,7 +1,5 @@
 <?php
 
-const DEFAULT_NO_OF_BACKUPS = 3;
-
 function main(): void {
     echo "Starting database backup process...\n";
     $accessInfo = json_decode(file_get_contents('access.json'), true);
@@ -9,10 +7,7 @@ function main(): void {
     foreach ($accessInfo as $db) {
         $port = $db['port'];
         $host = $db['host'];
-        $user = $db['user'];
-        $password = $db['password'];
         $dbName = $db['db_name'];
-        $numberOfBackups = $db['number_of_backups'] ?? DEFAULT_NO_OF_BACKUPS;
 
         try {
             backupDatabase($port, $host, $user, $password, $dbName);
@@ -37,11 +32,9 @@ function pruneBackupFiles(string $dbName, int $numberOfBackups): void {
 
 function backupDatabase(int $port, string $host, string $user, string $password, string $dbName): void {
     $command = sprintf(
-        'mysqldump -P %d -h %s -u %s --password=%s %s',
+        'mysqldump --defaults-extra-file=~/.backup.cnf -P %d -h %s %s --no-tablespaces',
         $port,
         escapeshellarg($host),
-        escapeshellarg($user),
-        escapeshellarg($password),
         escapeshellarg($dbName)
     );
 
