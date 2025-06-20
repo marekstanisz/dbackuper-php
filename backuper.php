@@ -50,6 +50,7 @@ function backupDatabase(int $port, string $host, string $dbName, string $cnfPath
     $backupFile = "{$dbName}_{$datestamp}.sql.gz";
 
     $fullCommand = "{$command} | gzip > " . escapeshellarg($backupFile);
+    $fullCommand .= " 2>&1";
     echo "Executing command: {$fullCommand}\n";
     try {
         exec("sh -c \"$fullCommand\"", $output, $returnCode);
