@@ -18,6 +18,7 @@ function main(): void {
     echo "Access information loaded successfully.\n";
     echo "Found " . count($accessInfo) . " databases to back up.\n";
     if (!file_exists('~/.backup.cnf')) {
+        echo "Backup configuration file ~/.backup.cnf does not exist.\n";
         throw new Exception("Backup configuration file ~/.backup.cnf does not exist.");
     }
     echo "Backup configuration file found.\n";
