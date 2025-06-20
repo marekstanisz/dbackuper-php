@@ -40,8 +40,8 @@ function backupDatabase(int $port, string $host, string $dbName, string $cnfPath
     echo "Backing up database: {$dbName} on host: {$host} at port: {$port}...\n";
     $command = sprintf(
         'mysqldump --defaults-extra-file=%s -P %d -h %s %s --no-tablespaces',
-        $cnfPath,
-        $port,
+        escapeshellarg($cnfPath),
+        escapeshellarg($port),
         escapeshellarg($host),
         escapeshellarg($dbName)
     );
@@ -55,6 +55,12 @@ function backupDatabase(int $port, string $host, string $dbName, string $cnfPath
         exec($fullCommand, $output, $returnCode);
     } catch (Exception $e) {
         throw new Exception("Failed to execute backup command: " . $e->getMessage());
+    }
+
+    echo "Backup command executed. Return code: {$returnCode}\n";
+    echo "Output: " . implode("\n", $output) . "\n";
+    if (!file_exists($backupFile)) {
+        throw new Exception("Backup file {$backupFile} was not created.");
     }
 
     if ($returnCode !== 0) {
